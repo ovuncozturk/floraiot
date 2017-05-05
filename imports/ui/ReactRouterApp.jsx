@@ -33,7 +33,7 @@ export default class ReactRouterApp extends Component {
     return (
       <BrowserRouter history={ createHistory() }>
         <Flexbox flexDirection='column' justifyContent='center'>
-          <Menu fluid widths={3} size='large'>
+          <Menu fluid widths={4} size='large'>
             <Menu.Item
               name='editorials'
               active={true}
@@ -56,6 +56,16 @@ export default class ReactRouterApp extends Component {
 
             <Menu.Item
               name='upcomingEvents'
+              active={false}
+              onClick={this.handleItemClick}
+              >
+              <Link to="/signup">
+                Upcoming Events
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item
+              name='Plant Repository'
               active={false}
               onClick={this.handleItemClick}
               >
