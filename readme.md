@@ -17,3 +17,8 @@ meteor npm install --save react-tap-event-plugin
 meteor add underscorestring:underscore.string
 meteor add accounts-password
 meteor npm install --save react-router
+meteor npm install --save react-router-dom
+
+meteor npm install --save bcrypt
+
+mqtt://192.168.1.103:3000
