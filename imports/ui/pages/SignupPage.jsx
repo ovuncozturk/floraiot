@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory';
 import { Accounts } from 'meteor/accounts-base'
 
@@ -24,7 +24,7 @@ export default class SignupPage extends Component {
           error: err.reason
         });
       } else {
-        createHistory().push('/login');
+          this.props.history.push('/login');
       }
     });
   }

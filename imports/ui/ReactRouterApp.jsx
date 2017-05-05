@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Switch, IndexRoute, Link } from 'react-router-dom'
-
+import { BrowserRouter, Route, Switch, IndexRoute, Link, Redirect } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory';
+
 import React, { Component, PropTypes } from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -25,6 +25,31 @@ import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
 import SignupPage from './pages/SignupPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
+    Meteor.userId() ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+);
+
+const AuthRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => (
+    !Meteor.userId() ? (
+      <Component {...props}/>
+    ) : (
+      <Redirect to={{
+        pathname: '/monitor',
+        state: { from: props.location }
+      }}/>
+    )
+  )}/>
+);
 
 export default class ReactRouterApp extends Component {
   render() {
@@ -33,24 +58,34 @@ export default class ReactRouterApp extends Component {
     return (
       <BrowserRouter history={ createHistory() }>
         <Flexbox flexDirection='column' justifyContent='center'>
-          <Menu fluid widths={3} size='large'>
+          <Menu fluid widths={4} size='large'>
             <Menu.Item
-              name='editorials'
-              active={true}
+              name='dashboard'
+              active={false}
               onClick={this.handleItemClick}
               >
-              <Link to="/monitor">
-                Editorials
+              <Link to="/dashboard">
+                Plant Dashboard
               </Link>
             </Menu.Item>
 
             <Menu.Item
-              name='reviews'
+              name='monitor'
+              active={true}
+              onClick={this.handleItemClick}
+              >
+              <Link to="/monitor">
+                Monitor Plant
+              </Link>
+            </Menu.Item>
+
+            <Menu.Item
+              name='signup'
               active={false}
               onClick={this.handleItemClick}
               >
-              <Link to="/login">
-                Reviews
+              <Link to="/signup">
+                Sign Up
               </Link>
             </Menu.Item>
 
@@ -59,15 +94,16 @@ export default class ReactRouterApp extends Component {
               active={false}
               onClick={this.handleItemClick}
               >
-              <Link to="/signup">
-                Upcoming Events
+              <Link to="/login">
+                Sign In
               </Link>
             </Menu.Item>
           </Menu>
 
-          <Route path='/monitor' component={App}/>
-          <Route path="/login" component={LoginPage}/>
-          <Route path="/signup" component={SignupPage}/>
+          <PrivateRoute path='/dashboard' exact component={App}/>
+          <PrivateRoute path='/monitor' exact component={App}/>
+          <AuthRoute path="/login" component={LoginPage}/>
+          <AuthRoute path="/signup" component={SignupPage}/>
         </Flexbox>
 
 

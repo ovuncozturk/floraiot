@@ -22,7 +22,7 @@ export default class LoginPage extends Component {
           error: err.reason
         });
       } else {
-        createHistory().push('/');
+        this.props.history.push('/monitor');
       }
     });
   }
