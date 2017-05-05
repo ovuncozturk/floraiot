@@ -98,6 +98,16 @@ export default class ReactRouterApp extends Component {
                 Sign In
               </Link>
             </Menu.Item>
+
+            <Menu.Item
+              name='Plant Repository'
+              active={false}
+              onClick={this.handleItemClick}
+              >
+              <Link to="/signup">
+                Upcoming Events
+              </Link>
+            </Menu.Item>
           </Menu>
 
           <PrivateRoute path='/dashboard' exact component={App}/>
