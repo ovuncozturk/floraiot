@@ -13,6 +13,8 @@ if (Meteor.isServer) {
     raw: true
   });
 
+
+
   SensorReadings.after.insert(function(userId,doc) {
     let data = Papa.parse(doc.message,{delimeter:',',newline:'\n'});
     console.log("New value added");
