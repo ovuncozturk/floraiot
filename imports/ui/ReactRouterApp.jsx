@@ -17,6 +17,7 @@ import '../../imports/stylesheets/semantic.css'
 
 
 import App from './App.jsx';
+import PlantDashboardContainer from './PlantDashboardContainer.jsx';
 import AppContainer from './containers/AppContainer.jsx';
 import MainContainer from './containers/MainContainer.jsx';
 import PlantMonitorContainer from './PlantMonitorContainer.jsx';
@@ -24,6 +25,7 @@ import PlantIdentityContainer from './PlantIdentityContainer.jsx';
 import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
 import SignupPage from './pages/SignupPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
+import LoginPageAlt from './pages/LoginPageAlt.jsx'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -51,17 +53,34 @@ const AuthRoute = ({ component: Component, ...rest }) => (
   )}/>
 );
 
+
 export default class ReactRouterApp extends Component {
+  constructor(props){
+    super(props);
+    this.state = { activeItem: 'login',  isAuthenticated: Meteor.userId() !== null };
+    this.handleItemClick = this.handleItemClick.bind(this);
+  }
+
+  handleItemClick(event,data) {
+    if (Meteor.userId() !== null) {
+      if (data.name !== 'login' && data.name !== 'signup')
+        this.setState({ activeItem: data.name, isAuthenticated: Meteor.userId() !== null });
+    }
+    else {
+      if (data.name === 'login' || data.name === 'signup')
+        this.setState({ activeItem: data.name, isAuthenticated: Meteor.userId() !== null });
+    }
+  };
+
   render() {
     console.log("Rendering");
-    console.log(Store);
     return (
       <BrowserRouter history={ createHistory() }>
         <Flexbox flexDirection='column' justifyContent='center'>
           <Menu fluid widths={4} size='large'>
             <Menu.Item
               name='dashboard'
-              active={false}
+              active={this.state.activeItem === 'dashboard'}
               onClick={this.handleItemClick}
               >
               <Link to="/dashboard">
@@ -71,7 +90,7 @@ export default class ReactRouterApp extends Component {
 
             <Menu.Item
               name='monitor'
-              active={true}
+              active={this.state.activeItem === 'monitor'}
               onClick={this.handleItemClick}
               >
               <Link to="/monitor">
@@ -81,7 +100,7 @@ export default class ReactRouterApp extends Component {
 
             <Menu.Item
               name='signup'
-              active={false}
+              active={this.state.activeItem === 'signup'}
               onClick={this.handleItemClick}
               >
               <Link to="/signup">
@@ -90,8 +109,8 @@ export default class ReactRouterApp extends Component {
             </Menu.Item>
 
             <Menu.Item
-              name='upcomingEvents'
-              active={false}
+              name='login'
+              active={this.state.activeItem === 'login'}
               onClick={this.handleItemClick}
               >
               <Link to="/login">
@@ -99,20 +118,11 @@ export default class ReactRouterApp extends Component {
               </Link>
             </Menu.Item>
 
-            <Menu.Item
-              name='Plant Repository'
-              active={false}
-              onClick={this.handleItemClick}
-              >
-              <Link to="/signup">
-                Upcoming Events
-              </Link>
-            </Menu.Item>
           </Menu>
 
-          <PrivateRoute path='/dashboard' exact component={App}/>
-          <PrivateRoute path='/monitor' exact component={App}/>
-          <AuthRoute path="/login" component={LoginPage}/>
+          <PrivateRoute path='/dashboard' exact component={PlantDashboardContainer}/>
+          <PrivateRoute path='/monitor'  component={App}/>
+          <AuthRoute path="/login" component={LoginPageAlt}/>
           <AuthRoute path="/signup" component={SignupPage}/>
         </Flexbox>
 

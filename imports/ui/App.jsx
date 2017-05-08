@@ -9,8 +9,6 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 import Flexbox from 'flexbox-react';
 
-import '../../imports/stylesheets/semantic.css'
-
 import PlantMonitorContainer from './PlantMonitorContainer.jsx';
 import PlantIdentityContainer from './PlantIdentityContainer.jsx';
 import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
@@ -20,7 +18,8 @@ export default class App extends Component {
 
   render() {
     console.log("Rendering");
-    console.log(parseInt(this.props.match.params.deviceid, 10));
+    console.log(this.props.match.params.deviceid);
+    //console.log(parseInt(this.props.params.deviceid, 10));
     console.log(Store);
     return (
           <Flexbox flexDirection='row' justifyContent='center'>

@@ -13,6 +13,7 @@
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.15.2",
     "mqtt": "^2.0.1",
+    "number-to-words": "^1.2.3",
     "react": "^15.5.4",
     "react-addons-pure-render-mixin": "^15.5.2",
     "react-dom": "^15.5.4",

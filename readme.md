@@ -20,5 +20,6 @@ meteor npm install --save react-router
 meteor npm install --save react-router-dom
 
 meteor npm install --save bcrypt
+meteor npm install --save number-to-words
 
 mqtt://192.168.1.103:3000

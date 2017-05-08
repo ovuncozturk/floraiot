@@ -64,9 +64,15 @@ if (Meteor.isServer) {
       // Meteor.publish('sensorreadings', function(){
       //   return SensorReadings.find({}).fetch();
       // });
-
       Meteor.publish('plantmonitor', function(){
-        return PlantMonitor.find({id: 'ESP8266-1478318'},{sort: {date : -1}, limit: 300});
+        return PlantMonitor.find({},{sort: {date : -1}, limit: 300});
+      });
+
+      Meteor.publish('plantmonitor.machine', function(machineId){
+        new SimpleSchema({
+          machineId: {type: String}
+        }).validate({ machineId });
+        return PlantMonitor.find({id: machineId},{sort: {date : -1}, limit: 300});
       });
 
       Meteor.publish('plantstatistics', function() {
