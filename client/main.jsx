@@ -2,9 +2,9 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
 
-import ReactRouterApp from '../imports/ui/ReactRouterApp.jsx';
+import ReactReduxLittleRouterApp from '../imports/ui/ReactReduxLittleRouterApp.jsx';
 
 
 Meteor.startup(() => {
-  render(<ReactRouterApp />, document.getElementById('render-target'));
+  render(<ReactReduxLittleRouterApp />, document.getElementById('render-target'));
 });
