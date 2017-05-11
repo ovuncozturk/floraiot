@@ -7,6 +7,7 @@
   "dependencies": {
     "babel-runtime": "^6.20.0",
     "bcrypt": "^1.0.2",
+    "caniuse-api": "^2.0.0",
     "flexbox-react": "^4.0.2",
     "history": "^4.6.1",
     "material-ui": "^0.17.4",
@@ -14,6 +15,7 @@
     "moment": "^2.15.2",
     "mqtt": "^2.0.1",
     "number-to-words": "^1.2.3",
+    "ramda": "^0.23.0",
     "react": "^15.5.4",
     "react-addons-pure-render-mixin": "^15.5.2",
     "react-dom": "^15.5.4",
