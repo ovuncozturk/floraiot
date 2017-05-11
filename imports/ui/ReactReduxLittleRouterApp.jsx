@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from 'react';
 //import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
-import Store from '../../imports/redux/store/store';
+import Store from '../../imports/redux/store/storewithrouting';
 
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
@@ -31,113 +31,117 @@ import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
 import SignupPage from './pages/SignupPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import LoginPageAlt from './pages/LoginPageAlt.jsx'
-
-// Exported from redux-devtools
-import { createDevTools } from 'redux-devtools';
-
-// Monitors are separate packages, and you can make a custom one
-import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
-
-// createDevTools takes a monitor and produces a DevTools component
-const DevTools = createDevTools(
-  // Monitors are individually adjustable with props.
-  // Consult their repositories to learn about those props.
-  // Here, we put LogMonitor inside a DockMonitor.
-  // Note: DockMonitor is visible by default.
-  <DockMonitor toggleVisibilityKey='ctrl-h'
-               changePositionKey='ctrl-q'
-               defaultIsVisible={true}>
-    <LogMonitor theme='tomorrow' />
-  </DockMonitor>
-);
-
-
-import constraintReducer from '../redux/reducers/constraintReducer.js';
-
-// Define your routes in a route-to-anything hash like below.
-// The value of the route key can be any serializable data.
-// This data gets attached to the `router` key of the state
-// tree when its corresponding route is matched and dispatched.
-// Useful for page titles and other route-specific data.
-
-// Uses https://github.com/snd/url-pattern for URL matching
-// and parameter extraction.
-const routes = {
-  '/': {},
-  '/foo': {
-    '/bar': {},
-    '/zar': {},
-  },
-}
-
-// Install the router into the store for a browser-only environment.
-// routerForBrowser is a factory method that returns a store
-// enhancer and a middleware.
-const {
-  reducer,
-  enhancer,
-  middleware
-} = routerForBrowser({ routes });
-
-const logger = createLogger();
-
-const enhancers = [
-  enhancer,
-  applyMiddleware(middleware, ReduxThunk, logger),
-  DevTools.instrument()
-];
-
-const clientOnlyStore = createStore(
-  combineReducers({ router: reducer, constraintReducer }),
-  initialState,
-  compose(...enhancers)
-);
-
-
-const store = createStore(
-  combineReducers({ router: reducer }),
-  // If this is a server render, we grab the
-  // initial state the hbs template inserted
-  window.__INITIAL_STATE || {},
-  compose(
-    enhancer,
-    applyMiddleware(middleware),
-    window.devToolsExtension ?
-      window.devToolsExtension() : f => f
-  )
-);
-//
-// // ...after creating your store
-// const initialLocation = clientOnlyStore.getState().router;
-// if (initialLocation) {
-//   clientOnlyStore.dispatch(initializeCurrentLocation(initialLocation));
-// }
+import Login from './Login.jsx'
 
 
 export default class ReactReduxLittleRouterApp extends Component {
   constructor(props){
     super(props);
+    this.state = { activeItem: 'login'};
+    this.handleItemClick = this.handleItemClick.bind(this);
   }
+
+  handleItemClick(event,data) {
+    event.preventDefault();
+    if (data.name === 'logout') {
+      console.log(Meteor.user());
+      Meteor.logout(function(err){
+        Store.dispatch(push('/signin'));
+        this.setState({ activeItem: 'signin' });
+      });
+    }
+    else
+      this.setState({ activeItem: data.name });
+  };
 
   render() {
     console.log("Rendering");
     return (
-
-      <RouterProvider store={store}>
-        <Provider store={store}>
-          <Fragment forRoute='/foo'>
-            <div>
-              Matches /foo and everything deeper
-              <Fragment forRoute='/bar'>
-                <h1>Matches /foo/bar</h1>
+      <RouterProvider store={Store}>
+        <Provider store={Store}>
+          <Flexbox flexDirection='column' justifyContent='center'>
+            <Menu fluid widths={ 3 } size='large'>
+              <Fragment forRoute='/' withConditions={ location => Meteor.userId() !== null }>
+                <Menu.Item
+                  name='dashboard'
+                  active={this.state.activeItem === 'dashboard'}
+                  onClick={this.handleItemClick}
+                  >
+                  <Link href='/dashboard'>
+                    Plant Dashboard
+                  </Link>
+                </Menu.Item>
               </Fragment>
-              <Fragment forRoute='/zar'>
-                <h1>Matches /foo/zar</h1>
+              <Fragment forRoute='/' withConditions={ location => Meteor.userId() !== null }>
+                <Menu.Item
+                  name='monitor'
+                  active={this.state.activeItem === 'monitor'}
+                  onClick={this.handleItemClick}
+                  >
+                  <Link href="/monitor">
+                    Plant Monitor
+                  </Link>
+                </Menu.Item>
               </Fragment>
-            </div>
-          </Fragment>
 
+              <Fragment forRoute='/' withConditions={ location => Meteor.userId() === null }>
+                <Menu.Item
+                  name='signup'
+                  active={this.state.activeItem === 'signup'}
+                  onClick={this.handleItemClick}
+                  >
+                  <Link href="/signup">
+                    Sign Up
+                  </Link>
+                </Menu.Item>
+              </Fragment>
+
+              <Fragment forRoute='/' withConditions={ location => Meteor.userId() === null }>
+                <Menu.Item
+                  name='signin'
+                  active={this.state.activeItem === 'signin'}
+                  onClick={this.handleItemClick}
+                  >
+                  <Link href="/signin">
+                    Sign In
+                  </Link>
+                </Menu.Item>
+              </Fragment>
+
+              <Fragment forRoute='/' withConditions={ location => Meteor.userId() !== null }>
+                <Menu.Item
+                  name='logout'
+                  active={this.state.activeItem === 'signin'}
+                  onClick={this.handleItemClick}
+                  >
+                </Menu.Item>
+              </Fragment>
+            </Menu>
+            <Fragment forRoute='/dashboard'>
+              <div>
+                <h1>Dashboard</h1>
+                <PlantDashboardContainer/>
+              </div>
+            </Fragment>
+            <Fragment forRoute='/monitor/:machineid'>
+              <div>
+                <h1>Monitor { this.state.router}</h1>
+                <PlantMonitorContainer/>
+              </div>
+            </Fragment>
+            <Fragment forRoute='/signin' withConditions={ location => Meteor.userId() === null }>
+              <div>
+                <h1>Signin</h1>
+                <Login/>
+              </div>
+            </Fragment>
+            <Fragment forRoute='/signup' withConditions={ location => Meteor.userId() === null }>
+              <div>
+                <h1>Signup</h1>
+                <SignupPage/>
+              </div>
+            </Fragment>
+          </Flexbox>
         </Provider>
       </RouterProvider>
     );

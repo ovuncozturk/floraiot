@@ -7,7 +7,7 @@ if (Meteor.isServer) {
   console.log("Starting Plants");
 
   Meteor.publish('plants', function(){
-    return Plants.find({ username : this.userId},{});
+    return Plants.find({ },{});
   });
 
   Meteor.publish('plants.type', function(typeName){
@@ -15,6 +15,6 @@ if (Meteor.isServer) {
       typeName: {type: String}
     }).validate({ typeName });
 
-    return Plants.find({ username : this.userId, type: typeName},{});
+    return Plants.find({ owner : this.userId, type: typeName},{});
   });
 }

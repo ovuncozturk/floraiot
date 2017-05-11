@@ -4,7 +4,9 @@ import React, { Component, PropTypes } from 'react';
 import * as V from 'victory';
 import { VictoryLine, VictoryChart, VictoryAxis } from 'victory';
 
-import { Button, Icon, Image, Statistic, Card } from 'semantic-ui-react'
+import { Button, Icon, Image, Statistic, Card, List, Rating } from 'semantic-ui-react'
+import { push, replace, go, goBack, goForward, RouterProvider, Link } from 'redux-little-router';
+import { Provider, connect } from 'react-redux';
 
 import LineChartComponent from './LineChart.jsx';
 
@@ -25,7 +27,7 @@ const styles = {
   },
 };
 
-export default class PlantDashboard extends React.Component {
+class PlantDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,27 +36,34 @@ export default class PlantDashboard extends React.Component {
     };
   }
 
-  renderAllPlants()
+  renderAllPlants(item)
   {
+    console.log(item);
     return (
-      <Card>
+      <Card key={item._id}>
         <Card.Content>
-          <Image floated='right' size='mini' src='/assets/images/avatar/large/steve.jpg' />
+          <Image floated='right' size='mini' src={ 'http://localhost:3000/' + item.plantinfo.name + '.jpg'} />
           <Card.Header>
-            Steve Sanders
+            {item.name}
           </Card.Header>
           <Card.Meta>
-            Friends of Elliot
+            {item.plantinfo.latinname}
           </Card.Meta>
           <Card.Description>
-            Steve wants to add you to the group <strong>best friends</strong>
-        </Card.Description>
+            <List>
+             <List.Item>
+               <List.Content>Overall Rating <Rating icon='star' disabled={true} rating={item.plantinfo.overall_rating}  maxRating={10} /></List.Content>
+             </List.Item>
+             <List.Item>
+               <List.Content>Removal of Chemical Vapors <Rating icon='star' disabled={true} rating={item.plantinfo.removal_of_chemical_vapors}  maxRating={10} /></List.Content>
+             </List.Item>
+           </List>
+          </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='green'>Approve</Button>
-          <Button basic color='red'>Decline</Button>
-        </div>
+        <Link className='ui two buttons' href={'/monitor/'+ item.machineid }>
+          <Button basic color='green'>Details</Button>
+        </Link>
       </Card.Content>
     </Card>
   );
@@ -62,16 +71,16 @@ export default class PlantDashboard extends React.Component {
 
   render() {
     return (
-        <Flexbox flexDirection='column'>
-          <Flexbox flexDirection='row'>
+      <Flexbox flexDirection='column'>
+        <Flexbox flexDirection='row'>
           <Statistic.Group widths='four'>
             <Statistic>
-              <Statistic.Value>{converter.toWords(this.props.plantcount)}</Statistic.Value>
+              <Statistic.Value>{ converter.toWords(this.props.plantcount) }</Statistic.Value>
               <Statistic.Label>{ this.props.plantcount === 1 ? 'Plant' : 'Plants' }</Statistic.Label>
             </Statistic>
             <Statistic>
               <Statistic.Value text>
-                {converter.toWords(this.props.plantcount)}
+                { converter.toWords(this.props.plantcount) }
                 <br />Thousand
                 </Statistic.Value>
                 <Statistic.Label>Sensor Readings</Statistic.Label>
@@ -80,7 +89,7 @@ export default class PlantDashboard extends React.Component {
           </Flexbox>
           <Flexbox flexDirection='row'>
             <Card.Group>
-              {this.renderAllPlants()}
+              {this.props.plants.map(this.renderAllPlants,this)}
             </Card.Group>
           </Flexbox>
         </Flexbox>
@@ -93,3 +102,5 @@ PlantDashboard.propTypes = {
   plantswithtype : React.PropTypes.array,
   plantcount : React.PropTypes.number,
 };
+
+export default connect() (PlantDashboard);
