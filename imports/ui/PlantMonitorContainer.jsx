@@ -8,13 +8,21 @@ import PlantMonitorComponent from './PlantMonitor.jsx';
 import { push, replace, go, goBack, goForward, RouterProvider, Link } from 'redux-little-router';
 import { Provider, connect } from 'react-redux';
 
+import Store from '../../imports/redux/store/storewithrouting';
+
 import moment from 'moment';
 
-export default PlantMonitorContainer = createContainer(() => {
+PlantMonitorContainer = createContainer(() => {
   Meteor.subscribe('plantmonitor');
+  Meteor.subscribe('plantmonitor.machine', Store.getState().router.params.machineid);
   console.log("Subscribed Plant Monitor");
 
+  console.log(Store.getState().router.params);
+
   return {
-    plantmonitor: PlantMonitor.find({}).fetch(),
+    plantmonitor: PlantMonitor.find({id : Store.getState().router.params}).fetch(),
   };
 }, PlantMonitorComponent);
+
+
+export default connect() (PlantMonitorContainer);
