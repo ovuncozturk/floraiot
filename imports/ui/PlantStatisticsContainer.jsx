@@ -14,10 +14,10 @@ PlantStatisticsContainer = createContainer(() => {
   console.log("Subscribed Plant Statistics");
 
   console.log(Store.getState().router.params.machineid);
-  console.log(PlantStatistics.find({ machineid: Store.getState().router.params.machineid }).fetch());
+  console.log(PlantStatistics.find({ id: Store.getState().router.params.machineid }).fetch());
 
   return {
-    plantstatistics: PlantStatistics.find({ machineid: Store.getState().router.params.machineid }).fetch(),
+    plantstatistics: PlantStatistics.find({ id: Store.getState().router.params.machineid }).fetch(),
   };
 }, PlantStatisticsComponent);
 

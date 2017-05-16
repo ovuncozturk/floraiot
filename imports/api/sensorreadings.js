@@ -12,7 +12,7 @@ if (Meteor.isServer) {
 
   // 194.27.50.11:3000
   // 192.168.1.103:3000
-  SensorReadings.mqttConnect("mqtt://192.168.1.103:3000", ["/flora","#"], {
+  SensorReadings.mqttConnect("mqtt://194.27.50.11:3000", ["/flora","#"], {
     insert: true,
     raw: true
   });

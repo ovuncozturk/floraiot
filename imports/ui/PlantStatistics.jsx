@@ -4,13 +4,11 @@ import React, { Component, PropTypes } from 'react';
 import * as V from 'victory';
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryPie } from 'victory';
 
-import { Icon, Image, List } from 'semantic-ui-react'
+import { Icon, Image, List, Statistic } from 'semantic-ui-react'
 
 import LineChartComponent from './LineChart.jsx';
 
 import Flexbox from 'flexbox-react';
-import moment from 'moment';
-
 
 const styles = {
 };
@@ -40,26 +38,20 @@ export default class PlantStatistics extends React.Component {
     console.log(this.props.plantstatistics);
 
     return (
-      <List>
-        <List.Item>
-          <List.Content>
-            <List.Header as='a'>Temperature</List.Header>
-            <List.Description as='a'>{temperature}</List.Description>
-          </List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Content>
-            <List.Header as='a'>Humidity</List.Header>
-            <List.Description as='a'>{humidity}</List.Description>
-          </List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Content>
-            <List.Header as='a'>Luminosity</List.Header>
-            <List.Description as='a'>{luminosity}</List.Description>
-          </List.Content>
-        </List.Item>
-      </List>
+      <Flexbox flexDirection='column'>
+        <Statistic>
+          <Statistic.Value>{temperature}</Statistic.Value>
+          <Statistic.Label>Temperature</Statistic.Label>
+        </Statistic>
+        <Statistic>
+          <Statistic.Value>{humidity}</Statistic.Value>
+          <Statistic.Label>Humidity</Statistic.Label>
+        </Statistic>
+        <Statistic>
+          <Statistic.Value>{luminosity}</Statistic.Value>
+          <Statistic.Label>Luminosity</Statistic.Label>
+        </Statistic>
+      </Flexbox>
     )
   }
 }

@@ -27,6 +27,7 @@ meteor npm install --save ramda
 meteor npm install --save caniuse-api
 
 meteor npm install --save suncalc
-meteor npm install --save twit
+
+meteor add email
 
 mqtt://192.168.1.103:3000
