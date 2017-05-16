@@ -33,12 +33,29 @@ export default class PlantMonitor extends React.Component {
   }
 
   render() {
+    let idcard, tempdaylow, tempdayhigh, tempnightlow, tempnighthigh;
+
+    if (this.props.plantidentity.length == 1) {
+      idcard = this.props.plantidentity[0].plantinfo.temperature_requirements;
+      tempdaylow = idcard.daytime.min;
+      tempdayhigh = idcard.daytime.max;
+      tempnightlow = idcard.nighttime.min;
+      tempnighthigh = idcard.nighttime.max;
+    }
+    else {
+      idcard = "";
+      tempdaylow = -20;
+      tempdayhigh = 40;
+      tempnightlow = -20;
+      tempnighthigh = 40;
+    }
+
     return (
       <div>
         <Flexbox flexDirection='column' justifyContent='flex-start' alignItems='flex-start'>
-            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={20} upperlimit={40} sensorname="temperature"/>
-            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={0} upperlimit={100} sensorname="humidity"/>
-            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={0} upperlimit={80} sensorname="luminosity"/>
+            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={tempdaylow} upperlimit={tempdayhigh} sensorname="temperature"/>
+            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={70} upperlimit={90} sensorname="humidity"/>
+            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={20} upperlimit={80} sensorname="luminosity"/>
         </Flexbox>
       </div>
     )
@@ -47,4 +64,5 @@ export default class PlantMonitor extends React.Component {
 
 PlantMonitor.propTypes = {
   plantmonitor : React.PropTypes.array,
+  plantidentity : React.PropTypes.array,
 };

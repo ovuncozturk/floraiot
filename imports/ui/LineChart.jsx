@@ -1,64 +1,51 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-//import addConstraint from '../redux/actions/addConstraint';
-
 import Flexbox from 'flexbox-react';
 
 import * as V from 'victory';
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
 
+import R from 'ramda';
+
 class LineChartComponent extends React.Component {
-
-
 
   constructor(props) {
     super(props);
     this.state = {value: ""};
-    // this.handleChange = this.handleChange.bind(this);
-    // this.addConstraint = this.addConstraint.bind(this);
   }
 
-  // addConstraint(event) {
-  //   console.log("Kısıt");
-  //   console.log(this.props.propertyName);
-  //   console.log(this.state.value);
-  //   this.props.dispatch(addConstraint('ObjectProperty',this.props.propertyName,this.state.value,''));
-  // }
-  //
-  // handleChange(event, index, value) {
-  //   this.setState({value: value});
-  // };
-  //
-  // renderMenuItem(data) {
-  //   return (
-  //     <MenuItem
-  //       key={data._id}
-  //       value={data.uri}
-  //       primaryText={data.localname}
-  //     >
-  //     </MenuItem>
-  //   )
-  // }
-  //
-  // printMenuItem(data) {
-  //   console.log(data.label);
-  // }
 
   render() {
+    let threshold = (this.props.upperlimit - this.props.lowerlimit) * 0.1;
+    let domain = [this.props.lowerlimit - threshold, this.props.upperlimit + threshold ];
+    let dashArray = [8,4];
     const styles = this.getStyles();
 
+    console.log( R.map( x => new Date(x) , R.uniq(R.map(x => x.date.setSeconds(0,0), R.filter( x => x.date.getMinutes() % 10 === 0 ,this.props.plantmonitor.reverse())))));
+
     return (
-      <Flexbox>
-        <VictoryChart>
+        <VictoryChart width={800} height={300} >
           <VictoryLabel x={25} y={24} style={styles.title}
             text={s.capitalize(this.props.sensorname) }
+          />
+          <VictoryAxis dependentAxis
+            scale="linear"
+            standalone={false}
+            tickFormat={
+              (y) => {
+                return y;
+              }
+            }
+            domain = {domain}
+            style = { styles.axisOne}
           />
           <VictoryLine
             data={this.props.plantmonitor.reverse()}
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = {this.props.sensorname}
+            domain = {{ y : domain}}
             standalone={false}
             />
           <VictoryLine
@@ -66,26 +53,31 @@ class LineChartComponent extends React.Component {
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = { (datum) => this.props.lowerlimit }
+            domain = {{ y : domain}}
             standalone={false}
+            style={{ data: { stroke: 'red', strokeDasharray: dashArray } }}
             />
           <VictoryLine
             data={this.props.plantmonitor.reverse()}
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = { (datum) => this.props.upperlimit }
+            domain = {{ y : domain}}
             standalone={false}
+            style={{ data: { stroke: 'red', strokeDasharray: dashArray } }}
             />
           <VictoryAxis
             scale="time"
             standalone={false}
+            tickValues={R.map( x => new Date(x) , R.uniq(R.map(x => x.date.setSeconds(0,0), R.filter( x => x.date.getMinutes() % 10 === 0 ,this.props.plantmonitor.reverse()))))}
             tickFormat={
               (x) => {
-                return ;
+                return x.getHours() + ':' + (x.getMinutes() == 0 ? '00' : x.getMinutes());
               }
             }
-            />
+          />
+
         </VictoryChart>
-      </Flexbox>
     );
   }
 
@@ -108,7 +100,7 @@ class LineChartComponent extends React.Component {
         textAnchor: "start",
         verticalAnchor: "end",
         fill: "#000000",
-        fontFamily: "inherit",
+        fontFamily: "fira",
         fontSize: "18px",
         fontWeight: "bold"
       },
@@ -142,15 +134,15 @@ class LineChartComponent extends React.Component {
       axisOne: {
         grid: {
           stroke: (tick) =>
-            tick === -10 ? "transparent" : "#ffffff",
-          strokeWidth: 2
+            tick === -10 ? "transparent" : BLUE_COLOR,
+          strokeWidth: 0.2
         },
         axis: { stroke: BLUE_COLOR, strokeWidth: 0 },
         ticks: { strokeWidth: 0 },
         tickLabels: {
           fill: BLUE_COLOR,
-          fontFamily: "inherit",
-          fontSize: 16
+          fontFamily: "fira",
+          fontSize: 12
         }
       },
       labelOne: {

@@ -2,14 +2,21 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { PlantMonitor } from '../api/sensorreadings.js';
+import { PlantMonitor, Plants } from '../api/sensorreadings.js';
+
 import PlantIdentityComponent from './PlantIdentity.jsx';
 
-export default PlantIdentityContainer = createContainer(() => {
-  Meteor.subscribe('plantmonitor');
+import { Provider, connect } from 'react-redux';
+
+import Store from '../../imports/redux/store/storewithrouting';
+
+PlantIdentityContainer = createContainer(() => {
+  Meteor.subscribe('plantidentity', Store.getState().router.params.machineid);
   console.log("Subscribed Plant Identity");
 
   return {
-    plantidentity: PlantMonitor.find({},{sort: {date : -1}, limit: 10}).fetch(),
+    plantidentity: Plants.find({ owner : Meteor.userId(), machineid: Store.getState().router.params.machineid}).fetch(),
   };
 }, PlantIdentityComponent);
+
+export default connect() (PlantIdentityContainer);

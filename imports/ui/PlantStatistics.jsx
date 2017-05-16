@@ -26,7 +26,7 @@ export default class PlantStatistics extends React.Component {
 
   render() {
     let temperature,humdity,luminosity;
-    
+
     if (this.props.plantstatistics.length == 1) {
       temperature = this.props.plantstatistics[0].temperature.toFixed(2);
       humidity    = this.props.plantstatistics[0].humidity.toFixed(2);
@@ -42,21 +42,18 @@ export default class PlantStatistics extends React.Component {
     return (
       <List>
         <List.Item>
-          <List.Icon name='thermometer half' size='huge' verticalAlign='middle' />
           <List.Content>
             <List.Header as='a'>Temperature</List.Header>
             <List.Description as='a'>{temperature}</List.Description>
           </List.Content>
         </List.Item>
         <List.Item>
-          <List.Icon name='theme' size='huge' verticalAlign='middle' />
           <List.Content>
             <List.Header as='a'>Humidity</List.Header>
             <List.Description as='a'>{humidity}</List.Description>
           </List.Content>
         </List.Item>
         <List.Item>
-          <List.Icon name='sun' size='huge' verticalAlign='middle' />
           <List.Content>
             <List.Header as='a'>Luminosity</List.Header>
             <List.Description as='a'>{luminosity}</List.Description>

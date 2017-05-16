@@ -26,4 +26,7 @@ meteor npm install --save redux-little-router
 meteor npm install --save ramda
 meteor npm install --save caniuse-api
 
+meteor npm install --save suncalc
+meteor npm install --save twit
+
 mqtt://192.168.1.103:3000

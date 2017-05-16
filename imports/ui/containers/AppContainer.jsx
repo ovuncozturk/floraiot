@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router'
 import { Menu, Card, Icon, Image } from 'semantic-ui-react';
 
-import '../../../imports/stylesheets/semantic.css'
 import Flexbox from 'flexbox-react';
 
 export default class AppContainer extends Component {

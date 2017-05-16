@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import Flexbox from 'flexbox-react';
 import { Card, Icon, Image } from 'semantic-ui-react';
 import { Rating } from 'semantic-ui-react';
-import { List } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react';
+import SunCalc from 'suncalc';
 
 
 const styles = {
@@ -26,48 +27,49 @@ export default class PlantIdentity extends React.Component {
   }
 
   render() {
+    let idcard, plantname, typename, latinname, times;
+    let now = Date();
+
+    if (this.props.plantidentity.length == 1) {
+      idcard = this.props.plantidentity[0];
+      plantname = idcard.name;
+      typename = idcard.plantinfo.name;
+      latinname = idcard.plantinfo.latinname;
+      times = SunCalc.getTimes(new Date(), idcard.location.lati, idcard.location.long);
+      sunsettime = times.sunset.toString() + " " + now.toString();
+    }
+    else {
+      idcard = "";
+      plantname = "";
+      typename = "";
+      latinname = "";
+      sunsettime = "";
+    }
     return (
         <Flexbox flexDirection='column' justifyContent='flex-start' alignItems='flex-start'>
           <Card>
-            <Image src='plant1.jpeg' />
+            <Image src= {'http://localhost:3000/' + typename + '.jpg'} />
             <Card.Content>
               <Card.Header>
-                Areca Palm
+                {plantname}
               </Card.Header>
               <Card.Meta>
                 <span className='date'>
-                  Living Room
+                  {latinname}
                 </span>
               </Card.Meta>
               <Card.Description>
                 Also known as yellow-palm or butterfly palm.
+                {sunsettime}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
               <List>
                <List.Item>
-                 <List.Icon name='settings' />
-                 <List.Content>Health <Rating icon='star' disabled={true} rating={4}  maxRating={5} /></List.Content>
-
-               </List.Item>
-               <List.Item>
-                 <List.Icon name='heart' />
-                 <List.Content>New York, NY</List.Content>
-               </List.Item>
-               <List.Item>
-                 <List.Icon name='mail' />
-                 <List.Content>
-                   <a href='mailto:jack@semantic-ui.com'>jack@semantic-ui.com</a>
-                 </List.Content>
-               </List.Item>
-               <List.Item>
-                 <List.Icon name='linkify' />
-                 <List.Content>
-                   <a href='http://www.semantic-ui.com'>semantic-ui.com</a>
-                 </List.Content>
+                 <List.Content floated='left'>Health </List.Content>
+                 <List.Content floated='right'><Rating icon='heart' disabled={true} rating={4}  maxRating={5} /> </List.Content>
                </List.Item>
              </List>
-
             </Card.Content>
           </Card>
         </Flexbox>

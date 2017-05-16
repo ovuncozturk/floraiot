@@ -5,14 +5,20 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { PlantStatistics } from '../api/sensorreadings.js';
 import PlantStatisticsComponent from './PlantStatistics.jsx';
 
-export default PlantStatisticsContainer = createContainer(() => {
-  Meteor.subscribe('plantstatistics', {
-    onReady: function () { console.log("onReady And the Items actually Arrive", arguments); },
-    onError: function () { console.log("onError", arguments); }
-  });
+import { Provider, connect } from 'react-redux';
+
+import Store from '../../imports/redux/store/storewithrouting';
+
+PlantStatisticsContainer = createContainer(() => {
+  Meteor.subscribe('plantstatistics', Store.getState().router.params.machineid);
   console.log("Subscribed Plant Statistics");
 
+  console.log(Store.getState().router.params.machineid);
+  console.log(PlantStatistics.find({ machineid: Store.getState().router.params.machineid }).fetch());
+
   return {
-    plantstatistics: PlantStatistics.find({}).fetch(),
+    plantstatistics: PlantStatistics.find({ machineid: Store.getState().router.params.machineid }).fetch(),
   };
 }, PlantStatisticsComponent);
+
+export default connect() (PlantStatisticsContainer);

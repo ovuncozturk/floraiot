@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import * as V from 'victory';
 import { VictoryLine, VictoryChart, VictoryAxis } from 'victory';
 
-import { Button, Icon, Image, Statistic, Card, List, Rating } from 'semantic-ui-react'
+import { Button, Icon, Image, Statistic, Card, List, Rating, Divider, Dimmer, Loader, Accordion } from 'semantic-ui-react'
 import { push, replace, go, goBack, goForward, RouterProvider, Link } from 'redux-little-router';
 import { Provider, connect } from 'react-redux';
 
@@ -16,24 +16,9 @@ import Flexbox from 'flexbox-react';
 import moment from 'moment';
 
 
-const styles = {
-  VictoryLineChartStyle: {
-    width: 1600,
-    height: 400,
-  },
-  titleStyle: {
-    fontSize: 14,
-    fontFamily: 'Roboto',
-  },
-};
-
 class PlantDashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      zoom: null,
-      clicked: null,
-    };
   }
 
   renderAllPlants(item)
@@ -50,14 +35,32 @@ class PlantDashboard extends React.Component {
             {item.plantinfo.latinname}
           </Card.Meta>
           <Card.Description>
-            <List>
-             <List.Item>
-               <List.Content>Overall Rating <Rating icon='star' disabled={true} rating={item.plantinfo.overall_rating}  maxRating={10} /></List.Content>
-             </List.Item>
-             <List.Item>
-               <List.Content>Removal of Chemical Vapors <Rating icon='star' disabled={true} rating={item.plantinfo.removal_of_chemical_vapors}  maxRating={10} /></List.Content>
-             </List.Item>
-           </List>
+            <Accordion>
+              <Accordion.Title>
+                <Icon name='dropdown' />
+                Plant Ratings
+              </Accordion.Title>
+              <Accordion.Content>
+                <List>
+                 <List.Item>
+                   <List.Content>Overall Rating <Rating icon='star' disabled={true} rating={item.plantinfo.overall_rating}  maxRating={10} /></List.Content>
+                 </List.Item>
+                 <List.Item>
+                   <List.Content>Removal of Chemical Vapors <Rating icon='star' disabled={true} rating={item.plantinfo.removal_of_chemical_vapors}  maxRating={10} /></List.Content>
+                 </List.Item>
+                 <List.Item>
+                   <List.Content>Ease of Growth and Maintenance <Rating icon='star' disabled={true} rating={item.plantinfo.ease_of_growth_and_maintenance}  maxRating={10} /></List.Content>
+                 </List.Item>
+                 <List.Item>
+                   <List.Content>Resistance to insect infestation <Rating icon='star' disabled={true} rating={item.plantinfo.resistance_to_insect_infestation}  maxRating={10} /></List.Content>
+                 </List.Item>
+                 <List.Item>
+                   <List.Content>Transpiration rate <Rating icon='star' disabled={true} rating={item.plantinfo.transpiration_rate}  maxRating={10} /></List.Content>
+                 </List.Item>
+               </List>
+
+              </Accordion.Content>
+            </Accordion>
           </Card.Description>
       </Card.Content>
       <Card.Content extra>
@@ -70,24 +73,32 @@ class PlantDashboard extends React.Component {
 }
 
   render() {
+    if (this.props.systemstatistics.length != 1) {
+      return (
+        <Dimmer active inverted>
+          <Loader inverted>Loading</Loader>
+        </Dimmer>
+      )
+    }
+
     return (
       <Flexbox flexDirection='column'>
-        <Flexbox flexDirection='row'>
-          <Statistic.Group widths='four'>
+        <Flexbox flexDirection='row' justifyContent='center'>
+          <Statistic.Group >
             <Statistic>
               <Statistic.Value>{ converter.toWords(this.props.plantcount) }</Statistic.Value>
               <Statistic.Label>{ this.props.plantcount === 1 ? 'Plant' : 'Plants' }</Statistic.Label>
             </Statistic>
             <Statistic>
               <Statistic.Value text>
-                { converter.toWords(this.props.plantcount) }
-                <br />Thousand
+                { converter.toWords(this.props.systemstatistics[0].sensorreadingcount) }
                 </Statistic.Value>
                 <Statistic.Label>Sensor Readings</Statistic.Label>
               </Statistic>
             </Statistic.Group>
           </Flexbox>
-          <Flexbox flexDirection='row'>
+          <Divider horizontal> Plant List </Divider>
+          <Flexbox flexDirection='row' justifyContent='center'>
             <Card.Group>
               {this.props.plants.map(this.renderAllPlants,this)}
             </Card.Group>
@@ -101,6 +112,7 @@ PlantDashboard.propTypes = {
   plants : React.PropTypes.array,
   plantswithtype : React.PropTypes.array,
   plantcount : React.PropTypes.number,
+  systemstatistics : React.PropTypes.array,
 };
 
 export default connect() (PlantDashboard);

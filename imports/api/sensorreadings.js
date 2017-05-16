@@ -4,16 +4,18 @@ import moment from 'moment';
 const SensorReadings = new Mongo.Collection('sensorreadings');
 export const PlantMonitor = new Mongo.Collection('plantmonitor');
 export const PlantStatistics = new Mongo.Collection('plantstatistics');
+export const Plants = new Mongo.Collection('plants');
+export const SystemStatistics = new Mongo.Collection('systemstatistics');
 
 if (Meteor.isServer) {
   console.log("Starting Sensor Readings");
 
-  SensorReadings.mqttConnect("mqtt://194.27.50.11:3000", ["/flora","#"], {
+  // 194.27.50.11:3000
+  // 192.168.1.103:3000
+  SensorReadings.mqttConnect("mqtt://192.168.1.103:3000", ["/flora","#"], {
     insert: true,
     raw: true
   });
-
-
 
   SensorReadings.after.insert(function(userId,doc) {
     let data = Papa.parse(doc.message,{delimeter:',',newline:'\n'});
@@ -31,6 +33,8 @@ if (Meteor.isServer) {
 
       console.log(sensorValue);
       PlantMonitor.insert(sensorValue);
+      SystemStatistics.update({ id: 'floraiot'  },{ id: 'floraiot', sensorreadingcount : SensorReadings.find({}).count() }, {upsert: true});
+      console.log(SensorReadings.find({}).count());
       });
     });
 
@@ -68,14 +72,29 @@ if (Meteor.isServer) {
         return PlantMonitor.find({},{sort: {date : -1}, limit: 300});
       });
 
-      Meteor.publish('plantmonitor.machine', function(machineId){
-        new SimpleSchema({
-          machineId: {type: String}
-        }).validate({ machineId });
-        return PlantMonitor.find({id: machineId},{sort: {date : -1}, limit: 300});
+      Meteor.publish('plantmonitor.machine', function(machineId,readingCount){
+        return PlantMonitor.find({id: machineId},{sort: {date : -1}, limit: readingCount});
       });
 
-      Meteor.publish('plantstatistics', function() {
-        return PlantStatistics.find({id: 'ESP8266-1478318', timespan: 1, timeunit: 'hours'});
+      Meteor.publish('plantstatistics', function( machineid ) {
+        console.log("Publishing statistics : " + machineid);
+        console.log(PlantStatistics.find({ id: machineid, timespan: 1, timeunit: 'hours'}).fetch());
+        return PlantStatistics.find({ id: machineid, timespan: 1, timeunit: 'hours'});
+      });
+
+      console.log("Starting Plants");
+
+      Meteor.publish('plants', function(){
+        return Plants.find({ },{});
+      });
+
+      Meteor.publish('plantidentity', function(machineid){
+        return Plants.find({ owner : this.userId, machineid : machineid},{});
+      });
+
+      console.log("Starting System Statistics");
+
+      Meteor.publish('systemstatistics', function(machineid){
+        return SystemStatistics.find({});
       });
 }

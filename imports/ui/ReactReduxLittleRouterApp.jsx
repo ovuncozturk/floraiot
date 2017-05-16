@@ -13,26 +13,19 @@ import { createContainer } from 'meteor/react-meteor-data';
 import Flexbox from 'flexbox-react';
 import { Menu, Card, Icon, Image } from 'semantic-ui-react';
 
-import '../../imports/stylesheets/semantic.css'
-
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux';
 import { push,routerForBrowser, initializeCurrentLocation,initialState, Fragment, RouterProvider, Link } from 'redux-little-router';
 import { createLogger } from 'redux-logger';
 import ReduxThunk from 'redux-thunk';
 
-
-import App from './App.jsx';
 import PlantDashboardContainer from './PlantDashboardContainer.jsx';
-import AppContainer from './containers/AppContainer.jsx';
-import MainContainer from './containers/MainContainer.jsx';
 import PlantMonitorContainer from './PlantMonitorContainer.jsx';
 import PlantIdentityContainer from './PlantIdentityContainer.jsx';
 import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
-import SignupPage from './pages/SignupPage.jsx'
-import LoginPage from './pages/LoginPage.jsx'
-import LoginPageAlt from './pages/LoginPageAlt.jsx'
 import Login from './Login.jsx'
 
+
+import '../stylesheets/semantic.min.css'
 
 export default class ReactReduxLittleRouterApp extends Component {
   constructor(props){
@@ -119,26 +112,26 @@ export default class ReactReduxLittleRouterApp extends Component {
             </Menu>
             <Fragment forRoute='/dashboard'>
               <div>
-                <h1>Dashboard</h1>
                 <PlantDashboardContainer/>
               </div>
             </Fragment>
             <Fragment forRoute='/monitor/:machineid'>
               <div>
-                <h1>Monitor { this.state.router}</h1>
-                <PlantMonitorContainer/>
+                <Flexbox flexDirection='row' justifyContent='center'>
+                  <PlantIdentityContainer/>
+                  <PlantMonitorContainer/>
+                  <PlantStatisticsContainer/>
+                </Flexbox>
               </div>
             </Fragment>
             <Fragment forRoute='/signin' withConditions={ location => Meteor.userId() === null }>
               <div>
-                <h1>Signin</h1>
                 <Login/>
               </div>
             </Fragment>
             <Fragment forRoute='/signup' withConditions={ location => Meteor.userId() === null }>
               <div>
                 <h1>Signup</h1>
-                <SignupPage/>
               </div>
             </Fragment>
           </Flexbox>
