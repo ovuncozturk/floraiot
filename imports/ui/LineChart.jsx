@@ -6,8 +6,6 @@ import Flexbox from 'flexbox-react';
 import * as V from 'victory';
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
 
-import R from 'ramda';
-
 class LineChartComponent extends React.Component {
 
   constructor(props) {
@@ -21,8 +19,6 @@ class LineChartComponent extends React.Component {
     let domain = [this.props.lowerlimit - threshold, this.props.upperlimit + threshold ];
     let dashArray = [8,4];
     const styles = this.getStyles();
-
-    console.log( R.map( x => new Date(x) , R.uniq(R.map(x => x.date.setSeconds(0,0), R.filter( x => x.date.getMinutes() % 10 === 0 ,this.props.plantmonitor.reverse())))));
 
     return (
         <VictoryChart width={800} height={300} >
@@ -41,7 +37,7 @@ class LineChartComponent extends React.Component {
             style = { styles.axisOne}
           />
           <VictoryLine
-            data={this.props.plantmonitor.reverse()}
+            data={this.props.plantmonitor}
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = {this.props.sensorname}
@@ -49,7 +45,7 @@ class LineChartComponent extends React.Component {
             standalone={false}
             />
           <VictoryLine
-            data={this.props.plantmonitor.reverse()}
+            data={this.props.plantmonitor}
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = { (datum) => this.props.lowerlimit }
@@ -58,7 +54,7 @@ class LineChartComponent extends React.Component {
             style={{ data: { stroke: 'red', strokeDasharray: dashArray } }}
             />
           <VictoryLine
-            data={this.props.plantmonitor.reverse()}
+            data={this.props.plantmonitor}
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = { (datum) => this.props.upperlimit }
@@ -69,7 +65,6 @@ class LineChartComponent extends React.Component {
           <VictoryAxis
             scale="time"
             standalone={false}
-            tickValues={R.map( x => new Date(x) , R.uniq(R.map(x => x.date.setSeconds(0,0), R.filter( x => x.date.getMinutes() % 10 === 0 ,this.props.plantmonitor.reverse()))))}
             tickFormat={
               (x) => {
                 return x.getHours() + ':' + (x.getMinutes() == 0 ? '00' : x.getMinutes());
@@ -194,6 +189,7 @@ LineChartComponent.propTypes = {
   sensorname    : React.PropTypes.string,
   upperlimit    : React.PropTypes.number,
   lowerlimit    : React.PropTypes.number,
+  tickvalues    : React.PropTypes.array,
   name          : React.PropTypes.string,
 };
 

@@ -60,14 +60,21 @@ if (Meteor.isServer) {
                              { id: monitorEntry['id'], timespan: 1, timeunit: 'hours',
                                 temperature: averages['temperature'], humidity: averages['humidity'], luminosity: averages['luminosity'] }, {upsert: true});
 
+      let boundaries = Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).plantinfo;
+      let email = Meteor.users.findOne({'_id': Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).owner}, {_id: 1}).emails[0].address;
+
+      console.log(boundaries);
+      console.log(email);
+
+      // if (boundaries.temperature_requirements.daytime.min > monitorEntry.temperature)
+      //   Meteor.call('sendAlertToOwner', 'water alert', email);
+      // else if (boundaries.temperature_requirements.daytime.max < monitorEntry.temperature)
+      //   Meteor.call('sendAlertToOwner', 'temperature too high!', email);
       //console.log(findAverages(monitorEntry['id'],1,'hours'));
       //console.log(findAverages(monitorEntry['id'],1,'days'));
       //console.log(findAverages(monitorEntry['id'],1,'weeks'));
     });
-      //
-      // Meteor.publish('sensorreadings', function(){
-      //   return SensorReadings.find({}).fetch();
-      // });
+
       Meteor.publish('plantmonitor', function(){
         return PlantMonitor.find({},{sort: {date : -1}, limit: 300});
       });
@@ -76,9 +83,7 @@ if (Meteor.isServer) {
         return PlantMonitor.find({id: machineId},{sort: {date : -1}, limit: readingCount});
       });
 
-      Meteor.publish('plantstatistics', function( machineid ) {
-        console.log("Publishing statistics : " + machineid);
-        console.log(PlantStatistics.find({ id: machineid, timespan: 1, timeunit: 'hours'}).fetch());
+      Meteor.publish('plantstatistics', function( machineid ) {;
         return PlantStatistics.find({ id: machineid, timespan: 1, timeunit: 'hours'});
       });
 

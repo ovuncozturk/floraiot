@@ -22,7 +22,8 @@ import PlantDashboardContainer from './PlantDashboardContainer.jsx';
 import PlantMonitorContainer from './PlantMonitorContainer.jsx';
 import PlantIdentityContainer from './PlantIdentityContainer.jsx';
 import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
-import Login from './Login.jsx'
+import Login from './Login.jsx';
+import Signup from './Signup.jsx';
 
 
 import '../stylesheets/semantic.min.css'
@@ -131,7 +132,7 @@ export default class ReactReduxLittleRouterApp extends Component {
             </Fragment>
             <Fragment forRoute='/signup' withConditions={ location => Meteor.userId() === null }>
               <div>
-                <h1>Signup</h1>
+                <Signup/>
               </div>
             </Fragment>
           </Flexbox>

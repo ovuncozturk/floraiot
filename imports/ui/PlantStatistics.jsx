@@ -10,8 +10,8 @@ import LineChartComponent from './LineChart.jsx';
 
 import Flexbox from 'flexbox-react';
 
-const styles = {
-};
+
+import '../stylesheets/semantic.min.css'
 
 export default class PlantStatistics extends React.Component {
   constructor(props) {
@@ -38,20 +38,29 @@ export default class PlantStatistics extends React.Component {
     console.log(this.props.plantstatistics);
 
     return (
-      <Flexbox flexDirection='column'>
-        <Statistic>
-          <Statistic.Value>{temperature}</Statistic.Value>
-          <Statistic.Label>Temperature</Statistic.Label>
-        </Statistic>
-        <Statistic>
-          <Statistic.Value>{humidity}</Statistic.Value>
-          <Statistic.Label>Humidity</Statistic.Label>
-        </Statistic>
-        <Statistic>
-          <Statistic.Value>{luminosity}</Statistic.Value>
-          <Statistic.Label>Luminosity</Statistic.Label>
-        </Statistic>
-      </Flexbox>
+      <List>
+        <List.Item>
+          <List.Icon name='thermometer full' size='huge' verticalAlign='middle' />
+          <List.Content>
+            <List.Header as='a'>Temperature</List.Header>
+            <List.Description as='a'>{temperature}</List.Description>
+          </List.Content>
+        </List.Item>
+        <List.Item>
+          <List.Icon name='theme' size='huge' verticalAlign='middle' />
+          <List.Content>
+            <List.Header as='a'>Humidity</List.Header>
+            <List.Description as='a'>{humidity}</List.Description>
+          </List.Content>
+        </List.Item>
+        <List.Item>
+          <List.Icon name='sun' size='huge' verticalAlign='middle' />
+          <List.Content>
+            <List.Header as='a'>Luminosity</List.Header>
+            <List.Description as='a'>{luminosity}</List.Description>
+          </List.Content>
+        </List.Item>
+      </List>
     )
   }
 }

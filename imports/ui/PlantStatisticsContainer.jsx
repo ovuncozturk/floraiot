@@ -13,9 +13,6 @@ PlantStatisticsContainer = createContainer(() => {
   Meteor.subscribe('plantstatistics', Store.getState().router.params.machineid);
   console.log("Subscribed Plant Statistics");
 
-  console.log(Store.getState().router.params.machineid);
-  console.log(PlantStatistics.find({ id: Store.getState().router.params.machineid }).fetch());
-
   return {
     plantstatistics: PlantStatistics.find({ id: Store.getState().router.params.machineid }).fetch(),
   };
