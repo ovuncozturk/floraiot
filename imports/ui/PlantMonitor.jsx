@@ -33,14 +33,18 @@ export default class PlantMonitor extends React.Component {
   }
 
   render() {
-    let idcard, tempdaylow, tempdayhigh, tempnightlow, tempnighthigh;
+    let idcard, tempdaylow, tempdayhigh, tempnightlow, tempnighthigh, lightmin, lightmax, soilmoisturemin, soilmoisturemax;
 
     if (this.props.plantidentity.length == 1) {
-      idcard = this.props.plantidentity[0].plantinfo.temperature_requirements;
-      tempdaylow = idcard.daytime.min;
-      tempdayhigh = idcard.daytime.max;
-      tempnightlow = idcard.nighttime.min;
-      tempnighthigh = idcard.nighttime.max;
+      idcard = this.props.plantidentity[0].plantinfo.ideal_conditions;
+      tempdaylow = idcard.temp.daytime.min;
+      tempdayhigh = idcard.temp.daytime.max;
+      tempnightlow = idcard.temp.nighttime.min;
+      tempnighthigh = idcard.temp.nighttime.max;
+      lightmin = idcard.light.min;
+      lightmax = idcard.light.max;
+      soilmoisturemin = idcard.soil_moisture.min;
+      soilmoisturemax = idcard.soil_moisture.max;
     }
     else {
       idcard = "";
@@ -54,8 +58,8 @@ export default class PlantMonitor extends React.Component {
       <div>
         <Flexbox flexDirection='column' justifyContent='flex-start' alignItems='flex-start'>
             <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={tempdaylow} upperlimit={tempdayhigh} sensorname="temperature"/>
-            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={70} upperlimit={90} sensorname="humidity"/>
-            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={20} upperlimit={80} sensorname="luminosity"/>
+            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={soilmoisturemin} upperlimit={soilmoisturemax} sensorname="humidity"/>
+            <LineChartComponent plantmonitor={this.props.plantmonitor} lowerlimit={lightmin} upperlimit={lightmax} sensorname="luminosity"/>
         </Flexbox>
       </div>
     )

@@ -6,6 +6,8 @@ export const PlantMonitor = new Mongo.Collection('plantmonitor');
 export const PlantStatistics = new Mongo.Collection('plantstatistics');
 export const Plants = new Mongo.Collection('plants');
 export const SystemStatistics = new Mongo.Collection('systemstatistics');
+export const PlantInfo = new Mongo.Collection('plantinfo');
+export const PlantHealth = new Mongo.Collection('planthealth');
 
 if (Meteor.isServer) {
   console.log("Starting Sensor Readings");
@@ -60,11 +62,12 @@ if (Meteor.isServer) {
                              { id: monitorEntry['id'], timespan: 1, timeunit: 'hours',
                                 temperature: averages['temperature'], humidity: averages['humidity'], luminosity: averages['luminosity'] }, {upsert: true});
 
-      let boundaries = Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).plantinfo;
-      let email = Meteor.users.findOne({'_id': Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).owner}, {_id: 1}).emails[0].address;
+      PlantObserver(monitorEntry);
+      //let plantinfo = Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).plantinfo;
+      //let email = Meteor.users.findOne({'_id': Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).owner}, {_id: 1}).emails[0].address;
 
-      console.log(boundaries);
-      console.log(email);
+      //console.log(boundaries);
+      //console.log(email);
 
       // if (boundaries.temperature_requirements.daytime.min > monitorEntry.temperature)
       //   Meteor.call('sendAlertToOwner', 'water alert', email);
@@ -75,15 +78,77 @@ if (Meteor.isServer) {
       //console.log(findAverages(monitorEntry['id'],1,'weeks'));
     });
 
-      Meteor.publish('plantmonitor', function(){
-        return PlantMonitor.find({},{sort: {date : -1}, limit: 300});
-      });
+    let updatePlantHealthForPeriod = function(machineId,start, end, duration, temperatureHealthPoint, humidityHealthPoint, luminosityHealthPoint) {
+      plantHealth = PlantHealth.findOne({ id: machineId, start: start, end: end},
+                         { }, {});
+
+
+      if (plantHealth)
+      {
+        PlantHealth.update({ id: machineId, start: start, end: end},
+                           {
+                                id: machineId, start: start, end: end, duration: duration,
+                                temperatureHealthPoint : plantHealth.temperatureHealthPoint + temperatureHealthPoint,
+                                humidityHealthPoint : plantHealth.humidityHealthPoint + humidityHealthPoint,
+                                luminosityHealthPoint : plantHealth.luminosityHealthPoint + luminosityHealthPoint,
+                                countOfPoints : plantHealth.countOfPoints + 1,
+                           }, { upsert : true});
+
+      }
+      else {
+        PlantHealth.update({ id: machineId, start: start, end: end},
+                           {
+                                id: machineId, start: start, end: end, duration: duration,
+                                temperatureHealthPoint : temperatureHealthPoint,
+                                humidityHealthPoint : humidityHealthPoint,
+                                luminosityHealthPoint : luminosityHealthPoint,
+                                countOfPoints : 1,
+                           }, { upsert : true});
+      }
+    };
+
+    temperatureCoefficient  = 0.25;
+    //airhumidityCoefficient  = 0.25;
+    soilhumidityCoefficient = 0.50;
+    luminosityCoefficient   = 0.25
+
+    let PlantObserver = function(monitorEntry) {
+      let plantinfo = Plants.findOne({'machineid': monitorEntry['id']}, {_id: 1}).plantinfo;
+
+      // For a hourly period
+      normalizedStartDate = moment(monitorEntry.Date).startOf('hour').toDate();
+      normalizedEndDate = moment(monitorEntry.Date).endOf('hour').toDate();
+      console.log(normalizedStartDate);
+      console.log(normalizedEndDate);
+
+      updatePlantHealthForPeriod(monitorEntry['id'], normalizedStartDate, normalizedEndDate, 'hour',
+                                (plantinfo.ideal_conditions.temp.daytime.min > monitorEntry.temperature || plantinfo.ideal_conditions.temp.daytime.max < monitorEntry.temperature) ? -1 : 1,
+                                (plantinfo.ideal_conditions.soil_moisture.min > monitorEntry.humidity || plantinfo.ideal_conditions.soil_moisture.max < monitorEntry.humidity) ? -1 : 1,
+                                (plantinfo.ideal_conditions.light.min > monitorEntry.luminosity || plantinfo.ideal_conditions.light.max < monitorEntry.luminosity) ? -1 : 1
+      );
+
+      // For a daily period
+      normalizedStartDate = moment(monitorEntry.Date).startOf('day').toDate();
+      normalizedEndDate = moment(monitorEntry.Date).endOf('day').toDate();
+      console.log(normalizedStartDate);
+      console.log(normalizedEndDate);
+
+      updatePlantHealthForPeriod(monitorEntry['id'], normalizedStartDate, normalizedEndDate, 'day',
+                                (plantinfo.ideal_conditions.temp.daytime.min > monitorEntry.temperature || plantinfo.ideal_conditions.temp.daytime.max < monitorEntry.temperature) ? -1 : 1,
+                                (plantinfo.ideal_conditions.soil_moisture.min > monitorEntry.humidity || plantinfo.ideal_conditions.soil_moisture.max < monitorEntry.humidity) ? -1 : 1,
+                                (plantinfo.ideal_conditions.light.min > monitorEntry.luminosity || plantinfo.ideal_conditions.light.max < monitorEntry.luminosity) ? -1 : 1
+      );
+    };
+      //
+      // Meteor.publish('plantmonitor', function(){
+      //   return PlantMonitor.find({},{sort: {date : -1}, limit: 300});
+      // });
 
       Meteor.publish('plantmonitor.machine', function(machineId,readingCount){
         return PlantMonitor.find({id: machineId},{sort: {date : -1}, limit: readingCount});
       });
 
-      Meteor.publish('plantstatistics', function( machineid ) {;
+      Meteor.publish('plantstatistics', function( machineid ) {
         return PlantStatistics.find({ id: machineid, timespan: 1, timeunit: 'hours'});
       });
 
@@ -101,5 +166,13 @@ if (Meteor.isServer) {
 
       Meteor.publish('systemstatistics', function(machineid){
         return SystemStatistics.find({});
+      });
+
+      Meteor.publish('plantinfo', function(){
+        return PlantInfo.find({});
+      });
+
+      Meteor.publish('planthealth', function( machineid, start, duration ) {
+        return PlantHealth.find({ id: machineid, start: start, duration: duration });
       });
 }

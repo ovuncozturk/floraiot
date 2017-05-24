@@ -1,0 +1,127 @@
+{
+  "name" : "Kalanchoe",
+  "latinname": "Kalanchoe blossfeldiana",
+  "desc" : "Kalanchoe is a favorite among seasonal flowering plants, although it is available through the year. It produces beautiful flowers in an abudance of colors and is quite easy to grow and maintain. Its stunning array of flowers appear at the end of thin stems protruding upward through shiny green, oval leaves. Growers have developed color ranging from reds, yellows, and apricot, through orange, pink, and violet.Although the kalanchoe is relatively poor for removing indoor air toxins or adding much needed moisture to dry winter air, it is exceptionally beautiful when in bloom. After blooming, cut off flower stems and do not water until new growth begins. It will probably do better outdoors in summer.",
+  "ideal_conditions" : {
+    "temp" : {
+      "daytime" : { "min" : 24 , "max" :29 },
+      "nighttime" : { "min" : 18 , "max": 24 }
+    },
+    "light" :  { "min" : 7500, "max" : 15000} ,
+    "soil_moisture" : { "min" : 60, "max" : 80}
+  },
+  "rating" : {
+    "overall_rating" : 4.5,
+    "removal_of_chemical_vapors": 2,
+    "ease_of growth_and_maintenance": 7,
+    "resistance_to_insect_infestation" : 7,
+    "transpiration_rate" : 2
+  }
+}
+
+{
+  "name" : "Poinsettia",
+  "latinname": "Eupborbia pulcberrima",
+  "desc" : "A major contributor to poinsettia's popularity is the fact that it can be brought into bloom at will by growers simply by manipulating daylength. This, in combination with flaming red flowers and deep green leaves, more or less predestined poinsettia to become wildly popular during the winter holiday season. It is ubiquitous across North America in homes, offices, public buildings, and churches every December. The actual flowers of poinsettia are inconspicuous, grouped into little yellow clusters and hidden in the heart of the plant. But they are surrounded by the large brilliant scarlet bracts that make the plants irresistible at Christmas time. Poinsettias are tropical evergreen shrubs with slender woody stems that can bloom when only 12 to 18 inches tall. Poinsettia leaves and bracts are 3 to 6.5 inches long and coarsely serrate along the margins with soft, broad teeth. When the plant is in bloom, the bracts in the upper part of the plant, the ones surrounding the  tiny flowers, turn bright red,pink, white any color other than dark green.",
+  "ideal_conditions" : {
+    "temp" : {
+      "daytime" : { "min" : 18 , "max" :21 },
+      "nighttime" : { "min" : 10 , "max": 18 }
+    },
+    "light" :  { "min" : 2500, "max" : 5000} ,
+    "soil_moisture" : { "min" : 80, "max" : 100}
+  },
+  "rating" : {
+    "overall_rating" : 5.1,
+    "removal_of_chemical_vapors": 3,
+    "ease_of growth_and_maintenance": 5,
+    "resistance_to_insect_infestation" : 7,
+    "transpiration_rate" : 5
+  }
+}
+
+{
+  "name" : "Areca_Palm",
+  "latinname": "Chrysalidocarpus lutescens",
+  "desc" : "Areca palms are relatively fast-growing, multi-trunked, clumping true palms with many slender stems that sweep out and away from the center of the plant, creating an atmosphere of tropical abundance. The stems are smooth, yellow-green, and ringed by leaf scars, which gives them a bamboo-like appearance. The leaves are pinnately compound (feather-like), divided into 80 to 100 narrow, pointed leaflets, on both sides of the midrib. The midrib of the leaf curls in a graceful arch, and the leaflets are bright green, contrasting nicely with the golden yellow leaf stalks. These are popular houseplants, because they're pretty and inexpensive, but unfortunately, arecas really aren't the best palms to grow inside your home. They need a lot of light, they do not like fertilizer salt build-up in their potting medium, and they are sensitive to overwatering, all of which combine to make them relatively short-lived when grown indoors. Those that succeed get 8 feet tall and wide.",
+  "ideal_conditions" : {
+    "temp" : {
+      "daytime" : { "min" : 18 , "max" :24 },
+      "nighttime" : { "min" : 13 , "max": 18 }
+    },
+    "light" :  { "min" : 5000, "max" : 7500} ,
+    "soil_moisture" : { "min" : 60, "max" : 80}
+  },
+  "rating" : {
+    "overall_rating" : 8.5,
+    "removal_of_chemical_vapors": 8,
+    "ease_of growth_and_maintenance": 8,
+    "resistance_to_insect_infestation" : 8,
+    "transpiration_rate" : 1
+  }
+}
+
+
+{
+  "name" : "Rubber_Plant",
+  "latinname": "Ficus robusta",
+  "desc" : "Rubber plant is indeed a tree, and it does in fact produce rubber; however, it is actually a fig, Ficus elastica, and in common with the rest of the species in the banyan group of figs, it readily grows aerial roots from its branches. As a houseplant, rubber tree is grown for its beautiful, smooth, glossy, oval leaves 4 to 14 inches long and 2 to 6 inches wide. The evergreen leaves are thick and leathery, and several cultivars have reddish, variegated, or tricolor foliage. Rubber tree grows slowly if it isn't getting the right combination of light, warmth, and water, faster with more favorable conditions. Very old plants growing in pots may get as tall as 12 feet but take years to do so. The fruit is a small fig, about 0.3 inch, but this tree is extremely unlikely to ever flower indoors.",
+  "ideal_conditions" : {
+    "temp" : {
+      "daytime" : { "min" : 16 , "max" :27 },
+      "nighttime" : { "min" : 16 , "max": 21 }
+    },
+    "light" :  { "min" : 2500, "max" : 7500} ,
+    "soil_moisture" : { "min" : 60, "max" : 80}
+  },
+  "rating" : {
+    "overall_rating" : 8,
+    "removal_of_chemical_vapors": 9,
+    "ease_of growth_and_maintenance": 9,
+    "resistance_to_insect_infestation" : 8,
+    "transpiration_rate" : 7
+  }
+}
+
+{
+  "name" : "Christmas_And_Easter_Cactus",
+  "latinname": "Scblumbergera rbipsalidopsis",
+  "desc" : "These cacti are delightful and fascinating houseplants. The Christmas cactus has bright green, arched branches with flattened joints about every 4 cm. The branches droops, especially when in bloom. Buds usually set and are in   full bloom in December. Native species are found in the Orgel Mountains near Rio de Janeiro. Its profusion of bright blooms lasts for several weeks. The Easter cactus is similar in apperance but droops less and blooms in the springs. Both Christmas and Easter forms have the unusual property of removing carbon dioxiode and releasing oxygen at night. They can become quite large and often survive for many years. Propagation is quite easily accomplished by rooting stem cuttings.",
+  "ideal_conditions" : {
+    "temp" : {
+      "daytime" : { "min" : 18 , "max" :22 },
+      "nighttime" : { "min" : 13 , "max": 18 }
+    },
+    "light" :  { "min" : 5000, "max" : 7500} ,
+    "soil_moisture" : { "min" : 60, "max" : 80}
+  },
+  "rating" : {
+    "overall_rating" : 5.8,
+    "removal_of_chemical_vapors": 3,
+    "ease_of growth_and_maintenance": 9,
+    "resistance_to_insect_infestation" : 8,
+    "transpiration_rate" : 3
+  }
+}
+
+
+{
+  "name" : "Moth_Orchid",
+  "latinname": "Phalenopsis sp.",
+  "desc" : "Moth orchids are species and hybrids in the genera Phalaenopsis and Doritis. All are epiphytes in nature (they never grow in soil), and any one of the many available kinds would be a sophisticated addition to your home. The flowers are gorgeous with each of the two huge upper petals making half of a nearly complete circle. The little lower lip is brightly colored and very intricately shaped with various horns, teeth, and lumps. Flower color varies from virginal white or white with a red lip to pink, deep pink, dark purple-pink, yellow, orange, or green. Long, thin, erect flower stalks arise from below the leaves, each bearing from six to 20 or more flowers, which last in good condition for many weeks. These are big plants with a leaf spread 24 inches wide and flower stalks 36 inches tall. Flower size on these big boys is an impressive 5 inches across. Each flower stalk grows straight up, then arches over toward the light, then angles down toward the floor.",
+  "ideal_conditions" : {
+    "temp" : {
+      "daytime" : { "min" : 18 , "max" :22 },
+      "nighttime" : { "min" : 14 , "max": 18 }
+    },
+    "light" :  { "min" : 2500, "max" : 5000} ,
+    "soil_moisture" : { "min" : 80, "max" : 100}
+  },
+  "rating" : {
+    "overall_rating" : 4.5,
+    "removal_of_chemical_vapors": 3,
+    "ease_of growth_and_maintenance": 5,
+    "resistance_to_insect_infestation" : 7,
+    "transpiration_rate" : 3
+  }
+}

@@ -43,6 +43,7 @@ const routes = {
   '/dashboard': {},
   '/signup': {},
   '/signin': {},
+  '/addplant': {},
   '/foo': {
     '/bar': {},
     '/zar': {},

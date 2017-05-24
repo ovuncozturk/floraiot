@@ -33,7 +33,7 @@ class LineChartComponent extends React.Component {
                 return y;
               }
             }
-            domain = {domain}
+            /* domain = {domain} */
             style = { styles.axisOne}
           />
           <VictoryLine
@@ -41,7 +41,7 @@ class LineChartComponent extends React.Component {
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = {this.props.sensorname}
-            domain = {{ y : domain}}
+            /* domain = {{ y : domain}} */
             standalone={false}
             />
           <VictoryLine
@@ -49,7 +49,7 @@ class LineChartComponent extends React.Component {
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = { (datum) => this.props.lowerlimit }
-            domain = {{ y : domain}}
+            /* domain = {{ y : domain}} */
             standalone={false}
             style={{ data: { stroke: 'red', strokeDasharray: dashArray } }}
             />
@@ -58,7 +58,7 @@ class LineChartComponent extends React.Component {
             scale={{x: "time", y: "linear"}}
             x = { (datum) => datum.date}
             y = { (datum) => this.props.upperlimit }
-            domain = {{ y : domain}}
+            /* domain = {{ y : domain}} */
             standalone={false}
             style={{ data: { stroke: 'red', strokeDasharray: dashArray } }}
             />

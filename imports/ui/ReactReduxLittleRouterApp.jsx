@@ -22,8 +22,11 @@ import PlantDashboardContainer from './PlantDashboardContainer.jsx';
 import PlantMonitorContainer from './PlantMonitorContainer.jsx';
 import PlantIdentityContainer from './PlantIdentityContainer.jsx';
 import PlantStatisticsContainer from './PlantStatisticsContainer.jsx';
+import PlantHealthContainer from './PlantHealthContainer.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
+
+import AddPlantContainer from './AddPlantContainer.jsx';
 
 
 import '../stylesheets/semantic.min.css'
@@ -111,6 +114,11 @@ export default class ReactReduxLittleRouterApp extends Component {
                 </Menu.Item>
               </Fragment>
             </Menu>
+            <Fragment forRoute='/addplant'>
+              <div>
+                <AddPlantContainer/>
+              </div>
+            </Fragment>
             <Fragment forRoute='/dashboard'>
               <div>
                 <PlantDashboardContainer/>
@@ -122,6 +130,7 @@ export default class ReactReduxLittleRouterApp extends Component {
                   <PlantIdentityContainer/>
                   <PlantMonitorContainer/>
                   <PlantStatisticsContainer/>
+                  <PlantHealthContainer/>
                 </Flexbox>
               </div>
             </Fragment>

@@ -34,6 +34,7 @@ export default class PlantIdentity extends React.Component {
       idcard = this.props.plantidentity[0];
       plantname = idcard.name;
       typename = idcard.plantinfo.name;
+      description = idcard.plantinfo.desc;
       latinname = idcard.plantinfo.latinname;
       times = SunCalc.getTimes(new Date(), idcard.location.lati, idcard.location.long);
       sunsettime = times.sunset.toString() + " " + now.toString();
@@ -42,6 +43,7 @@ export default class PlantIdentity extends React.Component {
       idcard = "";
       plantname = "";
       typename = "";
+      description = "";
       latinname = "";
       sunsettime = "";
     }
@@ -59,17 +61,12 @@ export default class PlantIdentity extends React.Component {
                 </span>
               </Card.Meta>
               <Card.Description>
-                Also known as yellow-palm or butterfly palm.
+                {description}
                 {sunsettime}
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <List>
-               <List.Item>
-                 <List.Content floated='left'>Health </List.Content>
-                 <List.Content floated='right'><Rating icon='heart' disabled={true} rating={4}  maxRating={5} /> </List.Content>
-               </List.Item>
-             </List>
+              
             </Card.Content>
           </Card>
         </Flexbox>
